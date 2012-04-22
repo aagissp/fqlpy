@@ -1,0 +1,5 @@
+Simple python package allowing access to Facebook data through FQL queries.
+
+* FQL queries can be batched using Batch API and multiqueries
+* App access token support to get public data
+* User access token support to get user data
