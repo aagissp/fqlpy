@@ -24,11 +24,13 @@ else:
 ## BATCH REQUEST FOR FRIENDS
 ####################################################
 def getUserNames(uids):
-	USER_LIMIT_PER_CALL=5
+	# batch calls to 50 items per batch
+	USER_LIMIT_PER_CALL=50
 	if len(uids)>USER_LIMIT_PER_CALL:
 		result=getUserNames(uids[USER_LIMIT_PER_CALL:])
 		for (uid,name) in getUserNames(uids[:USER_LIMIT_PER_CALL]).items(): result[uid]=name
     		return result
+	# do the batched query
 	result={}
 	fqls=['SELECT name FROM user WHERE uid='+str(uid) for uid in uids]
 	datas=fb.runFQLs(fqls)
@@ -38,11 +40,13 @@ def getUserNames(uids):
 	return result
 
 def printLikesOfUsers(uids,names={}):
+	# batch calls to 50 items per batch
 	USER_LIMIT_PER_CALL=5
 	if len(uids)>USER_LIMIT_PER_CALL:
 		printLikesOfUsers(uids[:USER_LIMIT_PER_CALL],names)
 		printLikesOfUsers(uids[USER_LIMIT_PER_CALL:],names)
     		return
+	# do the batched query
 	fqls=['SELECT url FROM url_like WHERE user_id='+str(uid) for uid in uids]
 	datas=fb.runFQLs(fqls)
 	for uid,data in zip(uids,datas):
