@@ -33,10 +33,10 @@ def getUserNames(uids):
 	# do the batched query
 	result={}
 	fqls=['SELECT name FROM user WHERE uid='+str(uid) for uid in uids]
-	datas=fb.runFQLs(fqls)
-	for uid,data in zip(uids,datas):
-		for item in data:
-			result[uid]=item['name']
+	fbres=fb.runFQLs(fqls)
+	for uid,rows in zip(uids,fbres):
+		for row in rows:
+			result[uid]=row['name']
 	return result
 
 def printLikesOfUsers(uids,names={}):
@@ -48,10 +48,10 @@ def printLikesOfUsers(uids,names={}):
     		return
 	# do the batched query
 	fqls=['SELECT url FROM url_like WHERE user_id='+str(uid) for uid in uids]
-	datas=fb.runFQLs(fqls)
-	for uid,data in zip(uids,datas):
-		for item in data:
-			url=item['url']
+	fbres=fb.runFQLs(fqls)
+	for uid,rows in zip(uids,fbres):
+		for row in rows:
+			url=row['url']
 			print names.get(uid,str(uid)).encode('utf8'),'likes',url.encode('utf8')
 
 
